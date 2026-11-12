@@ -32,12 +32,26 @@ class AVLTree(Generic[T, K]):
     def _balance_factor(self, node: _Node[T]) -> int:
         return self._node_height(node.left) - self._node_height(node.right)
 
+    def _insert(self, node: _Node[T] | None, value: T) -> _Node[T]:
+        if node is None:
+            return _Node(value)
+        value_key = self._key(value)
+        node_key = self._key(node.value)
+        if value_key < node_key:
+            node.left = self._insert(node.left, value)
+        elif value_key > node_key:
+            node.right = self._insert(node.right, value)
+        else:
+            raise ValueError("Duplicate keys are not allowed")
+        self._update_height(node)
+        return node
+
     @property
     def height(self) -> int:
         return self._node_height(self._root)
 
     def insert(self, value: T) -> None:
-        raise NotImplementedError
+        self._root = self._insert(self._root, value)
 
     def search(self, key: K) -> T | None:
         raise NotImplementedError
