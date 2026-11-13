@@ -30,6 +30,14 @@ class Monitor:
     def temperature_height(self) -> int:
         return self._temperature_index.height
 
+    @property
+    def time_rotation_count(self) -> int:
+        return self._time_index.rotation_count
+
+    @property
+    def temperature_rotation_count(self) -> int:
+        return self._temperature_index.rotation_count
+
     def add_reading(self, timestamp: datetime, temperature: float) -> Reading:
         return self.add_readings([(timestamp, temperature)])[0]
 

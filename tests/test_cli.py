@@ -27,6 +27,8 @@ class CLITests(unittest.TestCase):
         self.assertIn("Total de leituras: 1", output)
         self.assertIn("Altura da AVL por horário: 1", output)
         self.assertIn("Altura da AVL por temperatura: 1", output)
+        self.assertIn("Rotações da AVL por horário: 0", output)
+        self.assertIn("Rotações da AVL por temperatura: 0", output)
         self.assertEqual(output.count("Total: 1 leitura(s)."), 4)
 
     def test_csv_import_from_menu(self):

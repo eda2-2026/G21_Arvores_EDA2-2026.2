@@ -57,9 +57,18 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(len(self.monitor), 0)
         self.assertEqual(self.monitor.time_height, 0)
         self.assertEqual(self.monitor.temperature_height, 0)
+        self.assertEqual(self.monitor.time_rotation_count, 0)
+        self.assertEqual(self.monitor.temperature_rotation_count, 0)
         self.assertEqual(self.monitor.readings_above(30), [])
         self.assertEqual(self.monitor.readings_between(datetime.min, datetime.max), [])
         self.assertEqual(self.monitor.add_readings([]), [])
+
+    def test_rotation_metrics_for_both_indices(self):
+        self.monitor.add_readings(
+            (self.now + timedelta(minutes=index), 20 + index) for index in range(3)
+        )
+        self.assertEqual(self.monitor.time_rotation_count, 1)
+        self.assertEqual(self.monitor.temperature_rotation_count, 1)
 
     def test_invalid_readings_are_rejected_before_changing_indices(self):
         for timestamp, temperature in (

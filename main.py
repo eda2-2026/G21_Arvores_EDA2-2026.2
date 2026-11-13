@@ -57,6 +57,8 @@ def run_menu(monitor: Monitor) -> None:
                 print(f"Total de leituras: {len(monitor)}")
                 print(f"Altura da AVL por horário: {monitor.time_height}")
                 print(f"Altura da AVL por temperatura: {monitor.temperature_height}")
+                print(f"Rotações da AVL por horário: {monitor.time_rotation_count}")
+                print(f"Rotações da AVL por temperatura: {monitor.temperature_rotation_count}")
             elif option == "6":
                 show_readings(monitor.chronological_readings())
             elif option == "7":
