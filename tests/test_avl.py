@@ -30,7 +30,13 @@ def assert_avl(test: unittest.TestCase, tree: AVLTree) -> None:
 
 class AVLTests(unittest.TestCase):
     def test_four_rotation_cases(self):
-        for values in ([30, 20, 10], [10, 20, 30], [30, 10, 20], [10, 30, 20]):
+        cases = (
+            ([30, 20, 10], 1),
+            ([10, 20, 30], 1),
+            ([30, 10, 20], 2),
+            ([10, 30, 20], 2),
+        )
+        for values, expected_rotations in cases:
             with self.subTest(values=values):
                 tree = AVLTree(key=lambda value: value)
                 for value in values:
@@ -39,6 +45,7 @@ class AVLTests(unittest.TestCase):
                 self.assertEqual(tree._root.value, 20)
                 self.assertEqual(tree.in_order(), [10, 20, 30])
                 self.assertEqual(tree.height, 2)
+                self.assertEqual(tree.rotation_count, expected_rotations)
 
     def test_ordered_reverse_and_random_insertions_at_volume(self):
         for size in (100, 1000):
@@ -58,6 +65,7 @@ class AVLTests(unittest.TestCase):
         tree = AVLTree(key=lambda value: value)
         self.assertEqual(len(tree), 0)
         self.assertEqual(tree.height, 0)
+        self.assertEqual(tree.rotation_count, 0)
         self.assertIsNone(tree.search(1))
         self.assertEqual(tree.in_order(), [])
         self.assertEqual(tree.range_search(1, 2), [])

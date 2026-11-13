@@ -7,7 +7,6 @@ from typing import Generic, TypeVar
 T = TypeVar("T")
 K = TypeVar("K")
 
-
 @dataclass(frozen=True)
 class _Node(Generic[T]):
     value: T
@@ -15,19 +14,12 @@ class _Node(Generic[T]):
     right: _Node[T] | None = None
     height: int = 1
 
-
 class AVLTree(Generic[T, K]):
-    """AVL genérica com chaves únicas e consultas por intervalo inclusivo.
-
-    Os nós são imutáveis: uma inserção recria apenas o caminho até a folha.
-    Assim, copy.copy(tree) compartilha os nós com segurança até novas inserções,
-    permitindo preparar atualizações de dois índices antes de publicá-las.
-    """
-
     def __init__(self, key: Callable[[T], K]) -> None:
         self._key = key
         self._root: _Node[T] | None = None
         self._size = 0
+        self._rotation_count = 0
 
     @staticmethod
     def _node_height(node: _Node[T] | None) -> int:
@@ -48,12 +40,14 @@ class AVLTree(Generic[T, K]):
         pivot = node.right
         assert pivot is not None
         left = self._make_node(node.value, node.left, pivot.left)
+        self._rotation_count += 1
         return self._make_node(pivot.value, left, pivot.right)
 
     def _rotate_right(self, node: _Node[T]) -> _Node[T]:
         pivot = node.left
         assert pivot is not None
         right = self._make_node(node.value, pivot.right, node.right)
+        self._rotation_count += 1
         return self._make_node(pivot.value, pivot.left, right)
 
     def _rebalance(self, node: _Node[T]) -> _Node[T]:
@@ -88,7 +82,7 @@ class AVLTree(Generic[T, K]):
                 node.value, node.left, self._insert(node.right, value)
             )
         else:
-            raise ValueError("Duplicate keys are not allowed")
+            raise ValueError("Chaves duplicadas não são permitidas")
         return self._rebalance(node)
 
     def __len__(self) -> int:
@@ -97,6 +91,10 @@ class AVLTree(Generic[T, K]):
     @property
     def height(self) -> int:
         return self._node_height(self._root)
+
+    @property
+    def rotation_count(self) -> int:
+        return self._rotation_count
 
     def insert(self, value: T) -> None:
         self._root = self._insert(self._root, value)
