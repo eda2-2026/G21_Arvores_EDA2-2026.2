@@ -4,7 +4,6 @@ from models.reading import DATETIME_FORMAT, Reading
 from services.importer import import_csv
 from services.monitor import Monitor
 
-
 MENU = """
 Monitoramento de temperatura de estufa
 1 - Inserir leitura
@@ -17,10 +16,8 @@ Monitoramento de temperatura de estufa
 0 - Sair
 """
 
-
 def read_datetime(prompt: str) -> datetime:
     return datetime.strptime(input(prompt).strip(), DATETIME_FORMAT)
-
 
 def show_readings(readings: list[Reading]) -> None:
     if not readings:
@@ -31,7 +28,6 @@ def show_readings(readings: list[Reading]) -> None:
         timestamp = reading.timestamp.strftime(DATETIME_FORMAT)
         print(f"{reading.reading_id:>6}  {timestamp}  {reading.temperature:g}")
     print(f"Total: {len(readings)} leitura(s).")
-
 
 def run_menu(monitor: Monitor) -> None:
     while True:
@@ -70,13 +66,11 @@ def run_menu(monitor: Monitor) -> None:
         except (ValueError, OSError) as error:
             print(f"Erro: {error}")
 
-
 def main() -> None:
     try:
         run_menu(Monitor())
     except (EOFError, KeyboardInterrupt):
         print("\nEncerrando monitoramento.")
-
 
 if __name__ == "__main__":
     main()

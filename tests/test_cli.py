@@ -8,7 +8,6 @@ from unittest.mock import patch
 from main import main, run_menu
 from services.monitor import Monitor
 
-
 class CLITests(unittest.TestCase):
     def run_session(self, inputs):
         monitor = Monitor()

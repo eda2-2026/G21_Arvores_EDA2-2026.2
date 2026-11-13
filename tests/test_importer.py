@@ -8,7 +8,6 @@ from services.importer import import_csv
 from services.monitor import Monitor
 from tests.test_avl import assert_avl
 
-
 class CSVTests(unittest.TestCase):
     def setUp(self):
         self.directory = TemporaryDirectory()

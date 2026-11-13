@@ -5,7 +5,6 @@ import unittest
 
 from trees.avl import AVLTree
 
-
 def assert_avl(test: unittest.TestCase, tree: AVLTree) -> None:
     """Verifica ordenação, alturas armazenadas e balanceamento de todos os nós."""
     def visit(node, lower=None, upper=None):
@@ -26,7 +25,6 @@ def assert_avl(test: unittest.TestCase, tree: AVLTree) -> None:
     height, size = visit(tree._root)
     test.assertEqual(tree.height, height)
     test.assertEqual(len(tree), size)
-
 
 class AVLTests(unittest.TestCase):
     def test_four_rotation_cases(self):

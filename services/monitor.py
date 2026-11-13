@@ -11,7 +11,6 @@ from models.reading import (
 )
 from trees.avl import AVLTree
 
-
 class Monitor:
     """Mantém duas AVL independentes apontando para as mesmas leituras."""
 

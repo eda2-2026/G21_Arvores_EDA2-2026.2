@@ -9,7 +9,6 @@ from services.monitor import Monitor
 from tests.test_avl import assert_avl
 from trees.avl import AVLTree
 
-
 class MonitorTests(unittest.TestCase):
     def setUp(self):
         self.monitor = Monitor()

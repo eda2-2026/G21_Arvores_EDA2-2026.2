@@ -6,7 +6,6 @@ from pathlib import Path
 from models.reading import DATETIME_FORMAT, validate_temperature
 from services.monitor import Monitor
 
-
 def import_csv(path: str | Path, monitor: Monitor) -> int:
     """Importa CSV UTF-8 com cabeçalho data_hora,temperatura, sem carga parcial."""
     with open(path, encoding="utf-8-sig", newline="") as source:
