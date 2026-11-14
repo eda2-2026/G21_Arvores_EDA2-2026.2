@@ -75,8 +75,8 @@ class CSVTests(unittest.TestCase):
             import_csv(self.path, self.monitor)
         self.assertEqual(len(self.monitor), 0)
 
-    def test_csv_files_with_100_and_1000_readings(self):
-        for size in (100, 1000):
+    def test_csv_files_with_100_1000_and_10000_readings(self):
+        for size in (100, 1000, 10000):
             with self.subTest(size=size):
                 monitor = Monitor()
                 with self.path.open("w", encoding="utf-8", newline="") as output:
