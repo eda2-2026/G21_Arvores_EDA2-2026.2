@@ -1,8 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from models.reading import DATETIME_FORMAT, Reading
 from services.importer import import_csv
 from services.monitor import Monitor
+from services.simulator import generate_measurements
 
 MENU = """
 Monitoramento de temperatura de estufa
@@ -13,6 +14,7 @@ Monitoramento de temperatura de estufa
 5 - Exibir estatísticas
 6 - Listar leituras por horário
 7 - Listar leituras por temperatura
+8 - Gerar leituras simuladas
 0 - Sair
 """
 
@@ -63,8 +65,23 @@ def run_menu(monitor: Monitor) -> None:
                 show_readings(monitor.chronological_readings())
             elif option == "7":
                 show_readings(monitor.temperature_readings())
+            elif option == "8":
+                count = int(input("Quantidade de leituras: "))
+                start = read_datetime("Data/hora inicial (AAAA-MM-DD HH:MM:SS): ")
+                interval = float(input("Intervalo em minutos: "))
+                minimum = float(input("Temperatura mínima em °C: "))
+                maximum = float(input("Temperatura máxima em °C: "))
+                measurements = generate_measurements(
+                    start,
+                    count,
+                    interval=timedelta(minutes=interval),
+                    minimum_temperature=minimum,
+                    maximum_temperature=maximum,
+                )
+                monitor.add_readings(measurements)
+                print(f"{count} leitura(s) simulada(s) inserida(s) nos dois índices.")
             else:
-                print("Opção inválida. Escolha um número de 0 a 7.")
+                print("Opção inválida. Escolha um número de 0 a 8.")
         except (ValueError, OSError) as error:
             print(f"Erro: {error}")
 

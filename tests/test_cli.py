@@ -39,6 +39,19 @@ class CLITests(unittest.TestCase):
         self.assertEqual(len(monitor), 1)
         self.assertIn("1 leitura(s) importada(s)", output)
 
+    def test_simulated_measurements_from_menu(self):
+        monitor, output = self.run_session([
+            "8", "3", "2026-11-13 08:00:00", "5", "20", "30", "0",
+        ])
+        readings = monitor.chronological_readings()
+        self.assertEqual(len(readings), 3)
+        self.assertEqual(
+            [reading.timestamp.strftime("%H:%M:%S") for reading in readings],
+            ["08:00:00", "08:05:00", "08:10:00"],
+        )
+        self.assertTrue(all(20 <= reading.temperature <= 30 for reading in readings))
+        self.assertIn("3 leitura(s) simulada(s) inserida(s) nos dois índices.", output)
+
     def test_invalid_inputs_do_not_exit_menu(self):
         monitor, output = self.run_session([
             "99", "1", "data inválida", "1", "2026-11-12 10:30:00", "nan",
